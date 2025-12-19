@@ -2,8 +2,6 @@
 
 一个用于打牌记分和记账的工具，支持实时转账记录和语音播报。
 
-[English Documentation](README_EN.md)
-
 ## 主要功能
 
 ### 1. 用户管理
