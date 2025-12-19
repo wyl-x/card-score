@@ -1,0 +1,41 @@
+name: card_score_client
+description: Card Score Tracking Client Application
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # HTTP客户端
+  http: ^1.1.0
+  
+  # 状态管理
+  provider: ^6.1.1
+  
+  # 本地存储
+  shared_preferences: ^2.2.2
+  
+  # JSON序列化
+  json_annotation: ^4.8.1
+  
+  # 语音播报
+  flutter_tts: ^3.8.5
+  
+  # UI组件
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  flutter_lints: ^3.0.0
+  
+  # JSON序列化代码生成
+  build_runner: ^2.4.7
+  json_serializable: ^6.7.1
+
+flutter:
+  uses-material-design: true
