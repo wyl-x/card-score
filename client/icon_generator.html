@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Card Score Icon Generator</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #canvas {
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <h1>打牌记账 APP 图标</h1>
+    <canvas id="canvas" width="1024" height="1024"></canvas>
+    <button onclick="downloadIcon()">下载图标 (icon.png)</button>
+    
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const size = 1024;
+        
+        // 绘制图标
+        function drawIcon() {
+            // 裁剪为圆角矩形
+            ctx.save();
+            roundRect(ctx, 0, 0, size, size, size * 0.18);
+            ctx.clip();
+            
+            // 背景渐变 - 使用fillRect确保填充整个画布
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#1565C0');
+            gradient.addColorStop(0.5, '#1976D2');
+            gradient.addColorStop(1, '#42A5F5');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // 绘制扑克牌元素 - 黑色花色用深色
+            drawPlayingCard(size * 0.22, size * 0.18, size * 0.28, size * 0.38, '♠', '#000000');
+            drawPlayingCard(size * 0.5, size * 0.28, size * 0.28, size * 0.38, '♥', '#E53935');
+            drawPlayingCard(size * 0.32, size * 0.5, size * 0.28, size * 0.38, '♣', '#000000');
+            
+            // 绘制计分笔记符号 - 更明显的设计
+            ctx.save();
+            ctx.translate(size * 0.68, size * 0.62);
+            ctx.rotate(-20 * Math.PI / 180);
+            
+            // 绘制笔 - 更粗更明显
+            ctx.strokeStyle = '#FF6F00';
+            ctx.fillStyle = '#FF6F00';
+            ctx.lineWidth = size * 0.025;
+            ctx.lineCap = 'round';
+            
+            // 笔身
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(size * 0.18, size * 0.18);
+            ctx.stroke();
+            
+            // 笔尖
+            ctx.beginPath();
+            ctx.arc(0, 0, size * 0.03, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 笔的高光
+            ctx.fillStyle = '#FFB74D';
+            ctx.beginPath();
+            ctx.arc(size * 0.01, -size * 0.01, size * 0.015, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+            
+            // 绘制加号和数字符号（记账符号）- 更大更明显
+            ctx.save();
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+            ctx.shadowBlur = size * 0.015;
+            
+            ctx.strokeStyle = '#FDD835';
+            ctx.lineWidth = size * 0.05;
+            ctx.lineCap = 'round';
+            
+            const plusX = size * 0.76;
+            const plusY = size * 0.22;
+            const plusSize = size * 0.15;
+            
+            ctx.beginPath();
+            ctx.moveTo(plusX - plusSize / 2, plusY);
+            ctx.lineTo(plusX + plusSize / 2, plusY);
+            ctx.moveTo(plusX, plusY - plusSize / 2);
+            ctx.lineTo(plusX, plusY + plusSize / 2);
+            ctx.stroke();
+            
+            ctx.restore();
+            ctx.restore();
+        }
+        
+        // 绘制扑克牌
+        function drawPlayingCard(x, y, width, height, suit, color) {
+            ctx.save();
+            
+            // 卡片阴影
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = size * 0.025;
+            ctx.shadowOffsetX = size * 0.012;
+            ctx.shadowOffsetY = size * 0.012;
+            
+            // 卡片背景
+            ctx.fillStyle = '#FFFFFF';
+            roundRect(ctx, x, y, width, height, size * 0.025);
+            ctx.fill();
+            
+            ctx.shadowColor = 'transparent';
+            
+            // 花色符号 - 更大更清晰
+            ctx.fillStyle = color;
+            ctx.font = `bold ${size * 0.15}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(suit, x + width / 2, y + height / 2);
+            
+            // 给黑色花色添加轻微的描边，使其更清晰
+            if (color === '#000000') {
+                ctx.strokeStyle = '#333333';
+                ctx.lineWidth = size * 0.002;
+                ctx.strokeText(suit, x + width / 2, y + height / 2);
+            }
+            
+            ctx.restore();
+        }
+        
+        // 绘制圆角矩形
+        function roundRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // 下载图标
+        function downloadIcon() {
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'icon.png';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+        
+        // 初始化
+        drawIcon();
+    </script>
+</body>
+</html>

@@ -36,6 +36,17 @@ dev_dependencies:
   # JSON序列化代码生成
   build_runner: ^2.4.7
   json_serializable: ^6.7.1
+  
+  # 图标生成工具
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
+
+# 图标配置
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#1976D2"
+  remove_alpha_ios: true
